@@ -322,8 +322,12 @@
     }
 
     .text span {
-        
         background-position: 100% 90%;
+    }
+
+    .side-one img {
+        width: 83px;
+        height: 51px;
     }
 
 }
