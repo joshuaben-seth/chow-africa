@@ -59,8 +59,7 @@ const fetchNextOption = async () => {
     const request = await fetch('https://mvp-api.chow.africa/choices');
     const choice = await request.json();
     if (choice) {
-        currentOption.value = choice.data.choice;
-        console.log(currentOption.value)
+        if (choice.data.choice.length) currentOption.value = choice.data.choice[0];
     }
     loading.value = false;
 }
