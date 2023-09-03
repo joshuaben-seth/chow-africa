@@ -56,7 +56,7 @@ const currentOption = ref({
 
 const fetchNextOption = async () => {
     loading.value = true;
-    const request = await fetch('http://34.225.202.95:5200/choices');
+    const request = await fetch('https://mvp-api.chow.africa/choices');
     const choice = await request.json();
     if (choice) {
         currentOption.value = choice.data.choice;
