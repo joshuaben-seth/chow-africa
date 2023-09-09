@@ -46,7 +46,7 @@
                 </div>
                 <div v-else class="grid grid-cols-2 gap-3 mt-5 py-5">
                   <div v-for="o of options" :key="o.title"
-                       @click="triggerClose"
+                       @click="triggerClose(o.value)"
                        class="p-2 bg-gray-100 duration-300 rounded-lg cursor-pointer hover:shadow-lg">
                     <div class="h-10 w-10 rounded-full bg-white my-3 p-1">
                       <img :src="o.icon"/>
@@ -70,6 +70,7 @@
 import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
 import {XMarkIcon} from '@heroicons/vue/24/outline'
 import {CheckIcon} from '@heroicons/vue/24/solid'
+import {logEvent} from 'firebase/analytics'
 import orderIcon from '~/assets/order.png'
 import cookIcon from '~/assets/cook.png'
 import restaurantIcon from '~/assets/restaurant.png'
@@ -77,37 +78,44 @@ import browseIcon from '~/assets/browse.png'
 
 const message = `Noted! We're working to make these available for you. We'd like to let you know when it's ready.`
 const optionChosen = ref(false);
+const {$analytics} = useNuxtApp();
 
 const options = [
   {
     icon: orderIcon,
     title: 'Order Meal',
+    value: 'order_meal',
     description: `Have the meal cooked and delivered to you`
   },
   {
     icon: cookIcon,
     title: 'Prepare at Home',
+    value: 'cook_at_home',
     description: `Get recipes and ingredients to prepare the meal at home`
   },
   {
     icon: restaurantIcon,
     title: 'Find Restaurants',
+    value: 'find_restaurants',
     description: `See a list of places that have this meal and their contact details`
   },
   {
     icon: browseIcon,
     title: 'Continue Browsing',
+    value: 'continue_browsing',
     description: `Stay on the app and continue looking at food options`
   }
 ]
 
-const triggerClose = () => {
+const props = defineProps<{
+  open: boolean;
+  foodChoice: any;
+}>();
+
+const triggerClose = (option: string) => {
+  logEvent($analytics, option, props.foodChoice)
   optionChosen.value = true;
 }
-
-defineProps<{
-  open: boolean;
-}>();
 
 defineEmits(['close'])
 onMounted(() => {

@@ -1,5 +1,5 @@
 <template>
-  <lazy-modal :open="open" @close="closeModal"/>
+  <lazy-modal :open="open" @close="closeModal" :food-choice="currentOption"/>
   <section v-if="loading" class="absolute h-screen w-screen bg-white/[.3] z-20 flex items-center justify-center">
     <loader/>
   </section>
