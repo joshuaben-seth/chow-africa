@@ -1,18 +1,18 @@
 <template>
-  <lazy-modal :open="open" @close="closeModal" :food-choice="currentOption"/>
+  <lazy-modal :open="open" @close="closeModal" :food-choice="currentOption" />
   <section v-if="loading" class="absolute h-screen w-screen bg-white/[.3] z-20 flex items-center justify-center">
-    <loader/>
+    <loader />
   </section>
   <section class="w-screen h-screen md:w-3/6 mx-auto relative">
     <section class="h-[8%] w-full flex items-center justify-center py-3">
-      <img :src="logo" alt="Chow Africa" class="h-full"/>
+      <img :src="logo" alt="Chow Africa" class="h-full" />
     </section>
     <section class="h-[92%] pt-5">
-      <section class="h-full bg-cover bg-bottom bg-no-repeat rounded-t-xl relative" :style="{
-                backgroundImage: `url(${currentOption.poster})`
-            }">
+      <section class="h-full bg-cover bg-top bg-no-repeat rounded-t-xl relative" :style="{
+        backgroundImage: `url(${getPoster(currentOption.poster)})`
+      }">
         <section
-            class="absolute top-5 w-1/2 md:w-2/6 text-sm md:text-lg transform -translate-x-1/2 left-1/2 mx-auto py-2 text-center text-white rounded-full bg-primary">
+          class="absolute top-5 w-1/2 md:w-2/6 text-sm md:text-lg transform -translate-x-1/2 left-1/2 mx-auto py-2 text-center text-white rounded-full bg-primary">
           Feel like eating this?
         </section>
         <section class="absolute bottom-16 text-white w-11/12 transform -translate-x-1/2 left-1/2 mx-auto">
@@ -28,8 +28,8 @@
                 </p>
               </section>
               <section class="md:col-span-2">
-                                <span class="bg-primary/[.4] text-bold text-center text-xs w-content p-2 rounded-full">🍝
-                                    {{ currentOption.category }}</span>
+                <span class="bg-primary/[.4] text-bold text-center text-xs w-content p-2 rounded-full">🍝
+                  {{ currentOption.category }}</span>
               </section>
             </section>
           </section>
@@ -45,6 +45,7 @@
 </template>
 <script lang="ts" setup>
 import logo from '~/assets/logo.svg';
+import comingSoon from '~/assets/coming-soon-flyer.png';
 
 const loading = ref(false);
 
@@ -77,6 +78,13 @@ const fetchNextOption = async () => {
     if (choice.data.choice.length) currentOption.value = choice.data.choice[0];
   }
   loading.value = false;
+}
+
+const getPoster = (poster: string) => {
+  if (!poster || poster === '' || !poster.includes('http')) {
+    return comingSoon;
+  }
+  return poster;
 }
 
 useHead({
